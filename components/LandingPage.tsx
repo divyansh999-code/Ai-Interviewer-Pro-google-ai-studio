@@ -167,9 +167,9 @@ const ProblemSection = () => (
                  </div>
                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">The Glitch</h3>
                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed font-mono text-sm">
-                    > Executing LeetCode... <span className="text-green-600 dark:text-green-500">SUCCESS</span><br/>
-                    > Memorizing Patterns... <span className="text-green-600 dark:text-green-500">SUCCESS</span><br/>
-                    > Explaining approach... <span className="text-red-600 dark:text-red-500 font-bold bg-red-100 dark:bg-red-500/10 px-1">CRITICAL FAILURE</span>
+                    &gt; Executing LeetCode... <span className="text-green-600 dark:text-green-500">SUCCESS</span><br/>
+                    &gt; Memorizing Patterns... <span className="text-green-600 dark:text-green-500">SUCCESS</span><br/>
+                    &gt; Explaining approach... <span className="text-red-600 dark:text-red-500 font-bold bg-red-100 dark:bg-red-500/10 px-1">CRITICAL FAILURE</span>
                  </p>
                  <p className="mt-4 text-gray-500 dark:text-gray-500 text-sm">
                     Generic questions do not compile with your specific resume data. System freeze imminent.
@@ -188,9 +188,9 @@ const ProblemSection = () => (
                  </div>
                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">The Solution</h3>
                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed font-mono text-sm">
-                    > Initializing Runtime Environment...<br/>
-                    > Loading Resume Data... <span className="text-cyan-600 dark:text-cyan-500">COMPLETE</span><br/>
-                    > Generating Tailored Scenarios... <span className="text-cyan-600 dark:text-cyan-500">COMPLETE</span>
+                    &gt; Initializing Runtime Environment...<br/>
+                    &gt; Loading Resume Data... <span className="text-cyan-600 dark:text-cyan-500">COMPLETE</span><br/>
+                    &gt; Generating Tailored Scenarios... <span className="text-cyan-600 dark:text-cyan-500">COMPLETE</span>
                  </p>
                  <p className="mt-4 text-gray-600 dark:text-gray-300 text-sm border-l-2 border-cyan-500 pl-4">
                     You need a runtime environment that mirrors reality. Tailored inputs. Real-time debugging. Zero latency learning.
