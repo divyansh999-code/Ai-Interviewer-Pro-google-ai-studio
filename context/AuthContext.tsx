@@ -38,47 +38,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
     try {
       // 1. Try Supabase Login (Database check)
-      const { data, error } = await supabase
+      // We use maybeSingle() to avoid throwing an error immediately if no row is found
+      let { data, error } = await supabase
         .from('users')
         .select('*')
         .eq('email', email)
-        .single();
+        .maybeSingle();
 
-      if (error) {
-        // Fallback to Local Storage for resilience (if needed for existing users)
+      // 2. Fallback to Local Storage if Supabase failed or didn't find the user
+      // This ensures offline demo capabilities still work
+      if (error || !data) {
         const storedUsers = JSON.parse(localStorage.getItem('ai_interviewer_users_db') || '[]');
-        const localUser = storedUsers.find((u: any) => u.email === email && u.password === password);
+        const localUser = storedUsers.find((u: any) => u.email === email);
         
         if (localUser) {
-           const appUser: User = {
-             id: localUser.id,
-             name: localUser.name,
-             email: localUser.email,
-             avatar: localUser.avatar
-           };
-           setUser(appUser);
-           localStorage.setItem('ai_interviewer_user', JSON.stringify(appUser));
-           return;
+           data = localUser; // Treat local user as the source of truth
+           error = null;     // Clear any previous error
         }
-
-        // Specific Error Handling for User Not Found
-        if (error.code === 'PGRST116') { // PGRST116 is "The result contains 0 rows"
-           throw new Error("First create account");
-        }
-        
-        console.warn("Supabase login warning:", error.message);
-        throw new Error("Connection error: " + error.message);
       }
 
+      // 3. User Existence Check
       if (!data) {
+        // User is not in DB and not in Local Storage
         throw new Error("First create account");
       }
 
-      // Simple password check (Note: use hashing/Supabase Auth in production)
+      // 4. Password Validation
       if (data.password !== password) {
         throw new Error("Invalid credentials");
       }
 
+      // 5. Successful Login
       const appUser: User = {
         id: data.id,
         name: data.name,
@@ -88,11 +78,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       setUser(appUser);
       localStorage.setItem('ai_interviewer_user', JSON.stringify(appUser));
+
     } catch (error: any) {
-      // Only log unexpected errors
-      if (error.message !== "First create account" && error.message !== "Invalid credentials") {
-          console.error("Login error:", error);
-      }
+      console.warn("Login flow error:", error.message);
       throw error;
     } finally {
       setIsLoading(false);

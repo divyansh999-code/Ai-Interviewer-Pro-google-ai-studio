@@ -215,6 +215,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
     } catch (err: any) {
       setTimeout(() => {
         setStatus('error');
+        // If AuthContext threw the specific "First create account", show it. 
+        // Otherwise default to generic error.
         setErrorMsg(err.message || "Access Denied: Verification failed.");
       }, 1500);
     }
@@ -301,9 +303,20 @@ const LoginPage: React.FC<LoginPageProps> = ({ onNavigate }) => {
             </div>
 
             {errorMsg && (
-              <div className="p-3 bg-red-950/50 border border-red-500/30 rounded-lg text-red-400 text-xs flex items-center gap-3 animate-pop-in">
-                <AlertCircle size={16} className="shrink-0" />
-                <span className="font-mono">{errorMsg}</span>
+              <div className="p-3 bg-red-950/50 border border-red-500/30 rounded-lg text-red-400 text-xs flex flex-col gap-2 animate-pop-in">
+                <div className="flex items-center gap-3">
+                  <AlertCircle size={16} className="shrink-0" />
+                  <span className="font-mono font-bold">{errorMsg}</span>
+                </div>
+                {errorMsg.toLowerCase().includes("create account") && (
+                   <button 
+                     type="button"
+                     onClick={() => onNavigate('signup')}
+                     className="ml-7 text-left text-cyan-400 hover:text-white underline underline-offset-4 decoration-dashed"
+                   >
+                     Go to Registration →
+                   </button>
+                )}
               </div>
             )}
 

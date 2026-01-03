@@ -346,12 +346,6 @@ const SignupPage: React.FC<SignupPageProps> = ({ onNavigate }) => {
             </div>
           </form>
 
-          <div className="mt-6 text-center relative z-20">
-             <p className="text-[10px] text-gray-500 font-mono">
-                By initializing, you accept the <span className="text-gray-400 underline cursor-pointer hover:text-white">Protocol Terms</span>.
-             </p>
-          </div>
-
         </div>
 
         {/* Footer Navigation */}
