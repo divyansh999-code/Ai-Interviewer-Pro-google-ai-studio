@@ -33,7 +33,7 @@ const ScoreDial = ({ score }: { score: number }) => {
   }, [score, circumference]);
   
   return (
-    <div className="relative w-56 h-56 flex items-center justify-center">
+    <div className="relative w-48 h-48 md:w-56 md:h-56 flex items-center justify-center">
       {/* Outer Glow */}
       <div className="absolute inset-0 bg-indigo-500/10 rounded-full blur-3xl animate-pulse"></div>
       
@@ -44,7 +44,7 @@ const ScoreDial = ({ score }: { score: number }) => {
           stroke="url(#scoreGradient)" 
           strokeWidth="6" 
           fill="transparent" 
-          strokeDasharray={circumference}
+          strokeDasharray={circumference} 
           strokeDashoffset={offset}
           strokeLinecap="round"
           className="transition-all duration-[2000ms] ease-out"
@@ -57,8 +57,8 @@ const ScoreDial = ({ score }: { score: number }) => {
         </defs>
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-6xl font-serif font-bold text-white tracking-tighter animate-[scale-in_0.5s_ease-out]">{score}</span>
-        <span className="text-xs text-indigo-200/60 uppercase tracking-[0.3em] font-medium mt-2">Overall Score</span>
+        <span className="text-5xl md:text-6xl font-serif font-bold text-white tracking-tighter animate-[scale-in_0.5s_ease-out]">{score}</span>
+        <span className="text-[10px] md:text-xs text-indigo-200/60 uppercase tracking-[0.3em] font-medium mt-2">Overall Score</span>
       </div>
     </div>
   );
@@ -83,8 +83,8 @@ const InteractiveRadarChart = ({ data }: { data: { category: string, score: numb
   }).join(" ");
 
   return (
-    <div className="relative w-full h-[320px] flex items-center justify-center">
-      <svg width={size} height={size} className="overflow-visible">
+    <div className="relative w-full aspect-square md:h-[320px] flex items-center justify-center">
+      <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-full max-w-[300px] mx-auto overflow-visible">
         {/* Background Web */}
         {[0.25, 0.5, 0.75, 1].map((scale, idx) => (
           <polygon 
@@ -296,12 +296,12 @@ ${phase.tasks.map(t => `- ${t}`).join('\n')}
 
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-40 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5">
-         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+         <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-20 flex items-center justify-between">
             <button onClick={onBack} className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors group">
                <div className="p-2 rounded-full border border-white/10 group-hover:bg-white/10 transition-colors">
                   <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
                </div>
-               <span className="font-mono text-xs tracking-widest uppercase">Exit Report</span>
+               <span className="font-mono text-xs tracking-widest uppercase hidden sm:inline">Exit Report</span>
             </button>
             <div className="flex items-center gap-4">
                <button 
@@ -323,56 +323,56 @@ ${phase.tasks.map(t => `- ${t}`).join('\n')}
          </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-32 pb-20 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 pt-24 md:pt-32 pb-20 relative z-10">
         
         {/* HEADER SECTION */}
-        <div className="flex flex-col md:flex-row items-start justify-between gap-16 mb-20 animate-slide-up-fade">
+        <div className="flex flex-col-reverse md:flex-row items-center md:items-start justify-between gap-10 md:gap-16 mb-12 md:mb-20 animate-slide-up-fade">
            
-           <div className="flex-1 space-y-8">
+           <div className="flex-1 space-y-6 md:space-y-8 text-center md:text-left w-full">
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-indigo-500/20 bg-indigo-500/10 text-indigo-300 text-[10px] font-bold uppercase tracking-[0.2em] shadow-lg shadow-indigo-900/20">
                  <Activity size={12} className="animate-pulse" /> Interview Analysis
               </div>
               
               <div>
-                <h1 className="text-5xl md:text-7xl font-serif text-white tracking-tight leading-[1.1] mb-6">
+                <h1 className="text-4xl md:text-7xl font-serif text-white tracking-tight leading-[1.1] mb-4 md:mb-6">
                    Performance <br/>
                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 italic pr-2">Evaluation</span>
                 </h1>
-                <div className="h-1 w-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mb-8"></div>
-                <p className="text-gray-400 text-lg max-w-xl leading-relaxed font-light">
+                <div className="h-1 w-16 md:w-20 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mb-6 md:mb-8 mx-auto md:mx-0"></div>
+                <p className="text-gray-400 text-base md:text-lg max-w-xl leading-relaxed font-light mx-auto md:mx-0">
                    <Typewriter text={report.summary} speed={20} delay={500} />
                 </p>
               </div>
               
-              <div className="flex items-center gap-6 pt-4">
-                 <div className={`px-8 py-4 rounded-2xl border backdrop-blur-md flex items-center gap-4 ${
+              <div className="flex justify-center md:justify-start pt-4">
+                 <div className={`px-6 md:px-8 py-3 md:py-4 rounded-2xl border backdrop-blur-md flex items-center gap-4 ${
                     report.hiringRecommendation === 'YES' ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-200' :
                     report.hiringRecommendation === 'NO' ? 'bg-red-500/5 border-red-500/20 text-red-200' :
                     'bg-amber-500/5 border-amber-500/20 text-amber-200'
                  }`}>
                     <div>
                        <div className="text-[10px] uppercase font-bold tracking-widest opacity-60 mb-1">Hiring Verdict</div>
-                       <div className="text-2xl font-serif">{report.hiringRecommendation}</div>
+                       <div className="text-xl md:text-2xl font-serif">{report.hiringRecommendation}</div>
                     </div>
-                    <div className={`w-10 h-10 rounded-full flex items-center justify-center border ${
+                    <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center border ${
                        report.hiringRecommendation === 'YES' ? 'bg-emerald-500/20 border-emerald-500/30' :
                        report.hiringRecommendation === 'NO' ? 'bg-red-500/20 border-red-500/30' :
                        'bg-amber-500/20 border-amber-500/30'
                     }`}>
-                       {report.hiringRecommendation === 'YES' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+                       {report.hiringRecommendation === 'YES' ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
                     </div>
                  </div>
               </div>
            </div>
 
-           <div className="relative pt-10 md:pt-0">
+           <div className="relative">
               <ScoreDial score={report.overallScore} />
            </div>
         </div>
 
         {/* NAVIGATION TABS */}
-        <div className="sticky top-24 z-30 flex justify-center mb-16 pointer-events-none">
-           <div className="inline-flex bg-[#0a0a0a]/80 p-1.5 rounded-full border border-white/10 backdrop-blur-xl shadow-2xl pointer-events-auto">
+        <div className="sticky top-16 md:top-24 z-30 flex justify-center mb-8 md:mb-16 pointer-events-none">
+           <div className="inline-flex bg-[#0a0a0a]/80 p-1 md:p-1.5 rounded-full border border-white/10 backdrop-blur-xl shadow-2xl pointer-events-auto overflow-x-auto max-w-full">
               {[
                 { id: 'overview', label: 'Overview', icon: Layers },
                 { id: 'transcript', label: 'Transcript', icon: BookOpen },
@@ -381,13 +381,13 @@ ${phase.tasks.map(t => `- ${t}`).join('\n')}
                  <button
                    key={tab.id}
                    onClick={() => setActiveTab(tab.id as any)}
-                   className={`flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-500 ${
+                   className={`flex items-center gap-2 px-4 md:px-6 py-2 md:py-3 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all duration-500 shrink-0 ${
                      activeTab === tab.id 
                        ? 'bg-white text-black shadow-lg transform scale-105' 
                        : 'text-gray-500 hover:text-white hover:bg-white/5'
                    }`}
                  >
-                    <tab.icon size={14} /> {tab.label}
+                    <tab.icon size={12} className="md:w-3.5 md:h-3.5" /> {tab.label}
                  </button>
               ))}
            </div>
@@ -401,12 +401,12 @@ ${phase.tasks.map(t => `- ${t}`).join('\n')}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                  
                  {/* Left: Radar */}
-                 <div className="bg-[#0a0a0a] rounded-3xl border border-white/5 p-10 shadow-2xl relative overflow-hidden group hover:border-white/10 transition-colors">
+                 <div className="bg-[#0a0a0a] rounded-3xl border border-white/5 p-6 md:p-10 shadow-2xl relative overflow-hidden group hover:border-white/10 transition-colors">
                     <div className="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none group-hover:opacity-[0.05] transition-opacity">
                        <Activity size={180} />
                     </div>
                     <div className="flex items-center justify-between mb-8">
-                       <h3 className="text-xl font-serif text-white flex items-center gap-3">
+                       <h3 className="text-lg md:text-xl font-serif text-white flex items-center gap-3">
                           <Zap size={20} className="text-amber-400" /> Skill Topology
                        </h3>
                     </div>
@@ -415,26 +415,26 @@ ${phase.tasks.map(t => `- ${t}`).join('\n')}
 
                  {/* Right: Lists */}
                  <div className="space-y-6">
-                    <div className="bg-[#0a0a0a] rounded-3xl border border-white/5 p-8 shadow-xl hover:border-emerald-500/20 transition-colors group">
+                    <div className="bg-[#0a0a0a] rounded-3xl border border-white/5 p-6 md:p-8 shadow-xl hover:border-emerald-500/20 transition-colors group">
                        <h3 className="text-xs font-bold text-emerald-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Key Strengths
                        </h3>
                        <div className="flex flex-wrap gap-3">
                           {report.strengths.map((str, i) => (
-                             <span key={i} className="px-4 py-2 bg-emerald-900/10 border border-emerald-500/10 text-emerald-200 text-sm rounded-lg font-medium group-hover:bg-emerald-900/20 transition-colors">
+                             <span key={i} className="px-3 py-1.5 md:px-4 md:py-2 bg-emerald-900/10 border border-emerald-500/10 text-emerald-200 text-xs md:text-sm rounded-lg font-medium group-hover:bg-emerald-900/20 transition-colors">
                                 {str}
                              </span>
                           ))}
                        </div>
                     </div>
 
-                    <div className="bg-[#0a0a0a] rounded-3xl border border-white/5 p-8 shadow-xl hover:border-red-500/20 transition-colors group">
+                    <div className="bg-[#0a0a0a] rounded-3xl border border-white/5 p-6 md:p-8 shadow-xl hover:border-red-500/20 transition-colors group">
                        <h3 className="text-xs font-bold text-red-400 uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
                           <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div> Critical Gaps
                        </h3>
                        <div className="flex flex-wrap gap-3">
                           {report.weaknesses.map((weak, i) => (
-                             <span key={i} className="px-4 py-2 bg-red-900/10 border border-red-500/10 text-red-200 text-sm rounded-lg font-medium group-hover:bg-red-900/20 transition-colors">
+                             <span key={i} className="px-3 py-1.5 md:px-4 md:py-2 bg-red-900/10 border border-red-500/10 text-red-200 text-xs md:text-sm rounded-lg font-medium group-hover:bg-red-900/20 transition-colors">
                                 {weak}
                              </span>
                           ))}
@@ -450,9 +450,9 @@ ${phase.tasks.map(t => `- ${t}`).join('\n')}
                  {report.transcriptAnalysis.map((item, idx) => (
                     <div key={idx} className="group bg-[#0a0a0a] border border-white/5 rounded-2xl overflow-hidden hover:border-indigo-500/30 transition-all duration-300">
                        
-                       <div className="p-8">
+                       <div className="p-6 md:p-8">
                           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                             <h4 className="text-lg font-serif text-white/90">
+                             <h4 className="text-base md:text-lg font-serif text-white/90">
                                 <span className="text-indigo-500/50 font-sans mr-4 text-sm font-bold tracking-widest">0{idx + 1}</span>
                                 {item.question}
                              </h4>
@@ -496,14 +496,14 @@ ${phase.tasks.map(t => `- ${t}`).join('\n')}
                     <div className="absolute left-[27px] top-4 bottom-4 w-px bg-gradient-to-b from-indigo-500 via-purple-500 to-transparent opacity-30"></div>
 
                     {report.roadmap.map((phase, idx) => (
-                       <div key={idx} className="relative pl-20">
+                       <div key={idx} className="relative pl-16 md:pl-20">
                           {/* Timeline Node */}
                           <div className="absolute left-0 top-0 w-14 h-14 rounded-full bg-[#0a0a0a] border border-white/10 flex items-center justify-center z-10 shadow-xl">
                              <div className="text-lg font-serif font-bold text-white">{idx + 1}</div>
                           </div>
                           
-                          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-8 hover:border-indigo-500/20 transition-colors group">
-                             <h3 className="text-xl font-serif text-white mb-6 flex items-center gap-3">
+                          <div className="bg-[#0a0a0a] border border-white/5 rounded-2xl p-6 md:p-8 hover:border-indigo-500/20 transition-colors group">
+                             <h3 className="text-lg md:text-xl font-serif text-white mb-6 flex items-center gap-3">
                                 {phase.phase}
                              </h3>
                              <ul className="space-y-4">

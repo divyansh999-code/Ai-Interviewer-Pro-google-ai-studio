@@ -75,32 +75,21 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
   const extractTextFromPdf = async (file: File): Promise<string> => {
     try {
       // Defensive resolution of PDF.js module parts
-      // esm.sh might provide named exports OR a default object depending on version/bundling
       const mod = pdfjsModule as any;
-      
-      // 1. Resolve the Library Object
       const pdfjs = mod.default || mod;
-      
-      // 2. Resolve GlobalWorkerOptions
       const GlobalWorkerOptions = pdfjs.GlobalWorkerOptions || mod.GlobalWorkerOptions;
-      
-      // 3. Resolve getDocument
       const getDocument = pdfjs.getDocument || mod.getDocument;
 
       if (!getDocument) {
         throw new Error("PDF Parser could not be initialized. Please copy-paste your resume text.");
       }
 
-      // 4. Configure Worker (Only if not already set)
-      // Use cdnjs for the worker script to ensure compatibility with standard browser worker loading (importScripts)
-      // esm.sh's .mjs worker often causes issues with fake worker setup or cross-origin checks
       if (GlobalWorkerOptions && !GlobalWorkerOptions.workerSrc) {
         GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js`;
       }
 
       const arrayBuffer = await file.arrayBuffer();
       
-      // Load the document
       const loadingTask = getDocument({ data: arrayBuffer });
       const pdf = await loadingTask.promise;
       
@@ -120,7 +109,6 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
       return fullText;
     } catch (err: any) {
       console.error("PDF Parse Error:", err);
-      // Provide a user-friendly error message
       if (err.name === 'PasswordException') {
         throw new Error("PDF is password protected. Please remove the password or copy-paste text.");
       } else if (err.message && err.message.includes("PDF Parser")) {
@@ -138,17 +126,15 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
 
     try {
       if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-        // PDF Handling
         try {
           const content = await extractTextFromPdf(file);
           setText(content);
         } catch (err: any) {
           console.error(err);
           setParseError(err.message || "Error parsing PDF");
-          setText(""); // Clear text on error
+          setText(""); 
         }
       } else if (file.type === 'text/plain' || file.name.endsWith('.md') || file.name.endsWith('.txt')) {
-        // Text/MD Handling
         const reader = new FileReader();
         reader.onload = (e) => {
           const content = e.target?.result as string;
@@ -156,7 +142,6 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
         };
         reader.readAsText(file);
       } else {
-        // Fallback for DOCX/Other (Simulation)
         setTimeout(() => {
           setText(`[IMPORTED FILE: ${file.name}]\n\n(Note: Direct parsing for .docx is not fully supported in this browser-only demo. Please copy-paste the text content for the best analysis results.)\n\n...Simulated content extraction...`);
         }, 1000);
@@ -203,25 +188,25 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
     <div className="w-full max-w-6xl mx-auto mb-12 animate-fadeIn relative z-10">
       
       {/* Header Section */}
-      <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-900/10 text-cyan-400 text-xs font-mono uppercase tracking-widest mb-4">
+      <div className="text-center mb-8 md:mb-10 px-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/30 bg-cyan-900/10 text-cyan-400 text-[10px] md:text-xs font-mono uppercase tracking-widest mb-4">
            <Cpu size={14} className="animate-pulse" /> Neural Ingestion Node
         </div>
-        <h2 className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">
+        <h2 className="text-3xl md:text-5xl font-bold text-white mb-2 tracking-tight">
           Analyze <GradientText>Candidate Profile</GradientText>
         </h2>
-        <p className="text-gray-400 max-w-xl mx-auto">
+        <p className="text-gray-400 max-w-xl mx-auto text-sm md:text-base">
           Upload a resume (PDF/TXT) or paste text below. Our AI scans for technical keywords, experience patterns, and knowledge gaps in real-time.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-8 items-stretch min-h-[500px]">
+      <div className="flex flex-col lg:grid lg:grid-cols-5 gap-6 md:gap-8 items-stretch min-h-[500px]">
         
         {/* LEFT COLUMN: 3D Visualization & Status */}
         <div className="lg:col-span-2 flex flex-col gap-4">
           
           {/* 3D Agent Container */}
-          <div className="relative h-64 lg:h-80 bg-[#0a0e27] rounded-2xl border border-white/10 overflow-hidden group">
+          <div className="relative h-48 sm:h-64 lg:h-80 bg-[#0a0e27] rounded-2xl border border-white/10 overflow-hidden group">
              {/* Tech Grid Background */}
              <div className="absolute inset-0 bg-grid-small opacity-20"></div>
              
@@ -241,7 +226,7 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
              </div>
 
              <div className="absolute bottom-4 right-4 z-20 text-right">
-                <div className="text-2xl font-bold text-white tabular-nums">
+                <div className="text-xl md:text-2xl font-bold text-white tabular-nums">
                    {getWordCount()}
                 </div>
                 <div className="text-[10px] text-gray-500 font-mono uppercase">Words Detected</div>
@@ -249,7 +234,7 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
           </div>
 
           {/* Detected Skills Panel */}
-          <div className="flex-grow bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 relative overflow-hidden">
+          <div className="flex-grow bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 md:p-6 relative overflow-hidden min-h-[120px]">
              <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
                    <Scan size={16} className="text-cyan-400" />
@@ -259,7 +244,7 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
              </div>
 
              {detectedSkills.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-gray-500 gap-2 opacity-50 min-h-[100px]">
+                <div className="h-full flex flex-col items-center justify-center text-gray-500 gap-2 opacity-50 min-h-[60px]">
                    <Scan size={24} className="animate-pulse" />
                    <span className="text-xs">Waiting for input stream...</span>
                 </div>
@@ -280,7 +265,7 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
         </div>
 
         {/* RIGHT COLUMN: The Terminal Input */}
-        <div className="lg:col-span-3 relative">
+        <div className="lg:col-span-3 relative h-[400px] lg:h-auto">
           
           <form className="h-full flex flex-col" onSubmit={(e) => e.preventDefault()}>
             <div 
@@ -297,11 +282,11 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
                <div className="flex items-center justify-between px-4 py-3 bg-white/5 border-b border-white/5">
                   <div className="flex items-center gap-4">
                     <div className="flex gap-2">
-                       <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-                       <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-                       <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                       <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-red-500/80"></div>
+                       <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-yellow-500/80"></div>
+                       <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-green-500/80"></div>
                     </div>
-                    <div className="flex items-center gap-2 text-xs font-mono text-gray-500">
+                    <div className="flex items-center gap-2 text-xs font-mono text-gray-500 max-w-[150px] truncate">
                        <Lock size={10} /> 
                        {fileName ? fileName : 'resume_context.txt'}
                     </div>
@@ -319,9 +304,9 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
                     <button 
                       type="button"
                       onClick={triggerFileUpload}
-                      className="flex items-center gap-2 px-3 py-1 rounded hover:bg-white/10 text-xs font-mono text-cyan-400 border border-transparent hover:border-cyan-500/30 transition-all"
+                      className="flex items-center gap-2 px-3 py-1 rounded hover:bg-white/10 text-[10px] md:text-xs font-mono text-cyan-400 border border-transparent hover:border-cyan-500/30 transition-all"
                     >
-                      <Upload size={12} /> IMPORT_FILE
+                      <Upload size={12} /> <span className="hidden sm:inline">IMPORT_FILE</span>
                     </button>
                     {fileName && (
                        <button 
@@ -352,7 +337,7 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
                     onFocus={() => setIsFocused(true)}
                     onBlur={() => setIsFocused(false)}
                     disabled={isProcessing}
-                    className="w-full h-full bg-transparent text-gray-300 font-mono text-sm p-4 outline-none resize-none leading-6 custom-scrollbar placeholder-gray-700 relative z-10"
+                    className="w-full h-full bg-transparent text-gray-300 font-mono text-xs md:text-sm p-4 outline-none resize-none leading-6 custom-scrollbar placeholder-gray-700 relative z-10"
                     placeholder="// Paste candidate resume text here...&#10;// OR Drag & Drop a PDF/TXT file to import automatically.&#10;//&#10;// Example:&#10;// Senior Frontend Engineer with 5 years experience in React, TypeScript..."
                   />
 
@@ -380,11 +365,11 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
 
                   {/* Parse Error Overlay */}
                   {parseError && (
-                    <div className="absolute inset-x-0 bottom-4 z-30 flex justify-center animate-slide-up-fade">
+                    <div className="absolute inset-x-0 bottom-4 z-30 flex justify-center animate-slide-up-fade px-4">
                         <div className="bg-red-950/90 border border-red-500/50 text-red-200 px-4 py-2 rounded-lg flex items-center gap-3 shadow-xl backdrop-blur-md">
-                            <AlertTriangle size={18} className="text-red-500" />
-                            <span className="text-sm font-medium">{parseError}</span>
-                            <button onClick={() => setParseError(null)} className="ml-2 hover:text-white"><X size={14} /></button>
+                            <AlertTriangle size={18} className="text-red-500 shrink-0" />
+                            <span className="text-xs md:text-sm font-medium break-all">{parseError}</span>
+                            <button onClick={() => setParseError(null)} className="ml-2 hover:text-white shrink-0"><X size={14} /></button>
                         </div>
                     </div>
                   )}
@@ -393,12 +378,12 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
                {/* Footer / Stats */}
                <div className="px-4 py-2 bg-white/5 border-t border-white/5 flex items-center justify-between text-[10px] text-gray-500 font-mono uppercase">
                   <div className="flex items-center gap-4">
-                     <span>Ln {text.split('\n').length}, Col {text.length}</span>
+                     <span className="hidden sm:inline">Ln {text.split('\n').length}, Col {text.length}</span>
                      <span>UTF-8</span>
                   </div>
                   <div className="flex items-center gap-2">
-                     <span>Signal Strength:</span>
-                     <div className="w-20 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                     <span>Signal<span className="hidden sm:inline"> Strength</span>:</span>
+                     <div className="w-12 sm:w-20 h-1.5 bg-gray-700 rounded-full overflow-hidden">
                         <div 
                           className={`h-full transition-all duration-500 ${strength > 80 ? 'bg-green-500' : strength > 40 ? 'bg-yellow-500' : 'bg-red-500'}`}
                           style={{ width: `${strength}%` }}
@@ -410,12 +395,6 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
 
             {/* Action Buttons */}
             <div className="mt-6 flex justify-end gap-4">
-               {/* 
-                 Updated Button logic to prevent double-click requirement.
-                 - type="button" prevents form submit conflict.
-                 - onMouseDown preventDefault prevents textarea blur, stopping re-renders.
-                 - onClick manually triggers submit logic.
-               */}
                <Button
                  type="button"
                  onClick={handleSubmit}
@@ -427,12 +406,12 @@ const ResumeAnalyzer: React.FC<ResumeAnalyzerProps> = ({ onSubmit, isLoading }) 
                >
                  {isProcessing ? (
                     <>
-                      <Terminal className="animate-spin mr-2" size={18} /> PROCESSING DATA STREAM...
+                      <Terminal className="animate-spin mr-2" size={18} /> PROCESSING...
                     </>
                  ) : (
                     <>
                       <Sparkles size={18} className="text-yellow-300 group-hover:scale-125 transition-transform" />
-                      INITIATE INTERVIEW SEQUENCE
+                      INITIATE INTERVIEW
                     </>
                  )}
                </Button>

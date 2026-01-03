@@ -428,23 +428,23 @@ const LiveInterview: React.FC<LiveInterviewProps> = ({ resumeText, difficulty = 
       </div>
 
       {/* 2. Header HUD */}
-      <div className="absolute top-0 left-0 w-full p-6 flex justify-between items-start z-20 pointer-events-none">
+      <div className="absolute top-0 left-0 w-full p-4 md:p-6 flex justify-between items-start z-20 pointer-events-none">
          <div className="flex items-center gap-4 animate-slide-up-fade">
-             <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center shadow-lg">
-                <Cpu size={20} className="text-cyan-400" />
+             <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-center shadow-lg">
+                <Cpu size={18} className="text-cyan-400 md:w-5 md:h-5" />
              </div>
              <div>
-                <h1 className="text-white font-bold text-lg tracking-tight">AI Interviewer <span className="text-cyan-400">Pro</span></h1>
+                <h1 className="text-white font-bold text-sm md:text-lg tracking-tight">AI Interviewer <span className="text-cyan-400">Pro</span></h1>
                 <div className="flex items-center gap-2">
                    <div className={`w-1.5 h-1.5 rounded-full ${status === 'connected' ? 'bg-emerald-500 shadow-[0_0_10px_#10b981]' : 'bg-amber-500'}`}></div>
-                   <span className="text-xs text-gray-400 font-mono uppercase tracking-wider">
+                   <span className="text-[10px] md:text-xs text-gray-400 font-mono uppercase tracking-wider">
                       {status === 'connected' ? 'Secure Link Active' : 'Initializing...'}
                    </span>
                 </div>
              </div>
          </div>
 
-         <div className="flex flex-col items-end gap-2 animate-slide-up-fade delay-100">
+         <div className="flex flex-col items-end gap-2 animate-slide-up-fade delay-100 hidden sm:flex">
              <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono text-gray-400">
                 MODE: <span className="text-white font-bold">{difficulty}</span>
              </div>
@@ -456,11 +456,11 @@ const LiveInterview: React.FC<LiveInterviewProps> = ({ resumeText, difficulty = 
       </div>
 
       {/* 3. Main Visualizer Container */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pb-20 md:pb-0">
          
          {/* Error State */}
          {status === 'error' && (
-           <div className="absolute z-50 bg-red-950/80 border border-red-500/30 p-6 rounded-2xl backdrop-blur-xl max-w-md text-center animate-pop-in">
+           <div className="absolute z-50 bg-red-950/80 border border-red-500/30 p-6 rounded-2xl backdrop-blur-xl max-w-md text-center animate-pop-in mx-4">
               <Zap size={32} className="text-red-500 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-white mb-2">Connection Interrupted</h3>
               <p className="text-red-200 text-sm mb-6">{errorMsg || "Unable to establish audio stream."}</p>
@@ -474,7 +474,7 @@ const LiveInterview: React.FC<LiveInterviewProps> = ({ resumeText, difficulty = 
          )}
 
          {/* The Canvas Visualizer */}
-         <div className="relative w-full max-w-3xl aspect-square md:aspect-video flex items-center justify-center">
+         <div className="relative w-full max-w-3xl h-[50vh] md:aspect-video flex items-center justify-center">
             <canvas 
               ref={canvasRef}
               className="w-full h-full"
@@ -493,10 +493,10 @@ const LiveInterview: React.FC<LiveInterviewProps> = ({ resumeText, difficulty = 
          </div>
 
          {/* Transcript / Hints Area */}
-         <div className="absolute bottom-32 w-full max-w-xl px-6 text-center">
+         <div className="absolute bottom-32 md:bottom-32 w-full max-w-xl px-4 md:px-6 text-center">
              {status === 'connected' && (
                <div className="bg-black/40 backdrop-blur-sm border border-white/5 p-4 rounded-xl shadow-2xl transform transition-all hover:scale-105">
-                 <p className="text-gray-300 text-lg font-light leading-relaxed">
+                 <p className="text-gray-300 text-sm md:text-lg font-light leading-relaxed">
                    <Typewriter text="I'm listening. Tell me about your background." delay={500} speed={40} />
                  </p>
                </div>
@@ -506,10 +506,10 @@ const LiveInterview: React.FC<LiveInterviewProps> = ({ resumeText, difficulty = 
       </div>
 
       {/* 4. Glass Control Bar */}
-      <div className="absolute bottom-8 z-30 pointer-events-auto">
-         <div className="flex items-center gap-4 p-2 pl-6 pr-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl">
+      <div className="absolute bottom-6 md:bottom-8 z-30 pointer-events-auto w-full flex justify-center px-4">
+         <div className="flex items-center gap-3 md:gap-4 p-2 pl-4 md:pl-6 pr-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl max-w-full overflow-x-auto">
             
-            <div className="flex items-center gap-4 mr-4">
+            <div className="flex items-center gap-2 md:gap-4 mr-2 md:mr-4 shrink-0">
                {/* Signal Strength Indicators */}
                <div className="flex items-end gap-1 h-4">
                   <div className="w-1 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
@@ -517,34 +517,34 @@ const LiveInterview: React.FC<LiveInterviewProps> = ({ resumeText, difficulty = 
                   <div className="w-1 h-4 bg-emerald-500 rounded-full animate-pulse delay-150"></div>
                   <div className="w-1 h-2 bg-emerald-500/30 rounded-full"></div>
                </div>
-               <span className="text-xs text-gray-400 font-mono uppercase">Audio Active</span>
+               <span className="text-[10px] md:text-xs text-gray-400 font-mono uppercase hidden sm:inline">Audio Active</span>
             </div>
 
             {/* Mute Button */}
             <button 
                onClick={() => setIsMuted(!isMuted)}
-               className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 border ${
+               className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center transition-all duration-300 border shrink-0 ${
                  isMuted 
                    ? 'bg-red-500/20 border-red-500/50 text-red-400 hover:bg-red-500 hover:text-white' 
                    : 'bg-white/10 border-white/10 text-white hover:bg-white/20'
                }`}
                title={isMuted ? "Unmute Microphone" : "Mute Microphone"}
             >
-               {isMuted ? <MicOff size={20} /> : <Mic size={20} />}
+               {isMuted ? <MicOff size={18} /> : <Mic size={18} />}
             </button>
 
             {/* Video Button (Disabled visual) */}
-            <button className="w-12 h-12 rounded-full flex items-center justify-center bg-white/5 border border-white/5 text-gray-500 cursor-not-allowed">
-               <VideoOff size={20} />
+            <button className="w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center bg-white/5 border border-white/5 text-gray-500 cursor-not-allowed shrink-0">
+               <VideoOff size={18} />
             </button>
 
             {/* End Call Button */}
             <button 
                onClick={handleEndCall}
-               className="h-12 px-6 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold tracking-wide shadow-lg shadow-red-900/40 transition-all flex items-center gap-2 group"
+               className="h-10 md:h-12 px-4 md:px-6 rounded-full bg-red-600 hover:bg-red-500 text-white font-bold tracking-wide shadow-lg shadow-red-900/40 transition-all flex items-center gap-2 group shrink-0"
             >
-               <PhoneOff size={18} className="group-hover:rotate-90 transition-transform" />
-               <span className="hidden md:inline">END SESSION</span>
+               <PhoneOff size={16} className="group-hover:rotate-90 transition-transform" />
+               <span className="text-xs md:text-base">END<span className="hidden sm:inline"> SESSION</span></span>
             </button>
          </div>
       </div>

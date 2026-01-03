@@ -74,10 +74,10 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ analysis }) => {
   }, [analysis.experience_level]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-8">
+    <div className="grid grid-cols-12 gap-4 md:gap-6 mb-8">
       
       {/* 1. Main Profile Card */}
-      <div className="md:col-span-4 bg-white dark:bg-[#0d1021] rounded-2xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm relative overflow-hidden group">
+      <div className="col-span-12 md:col-span-4 bg-white dark:bg-[#0d1021] rounded-2xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm relative overflow-hidden group">
          <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-10 group-hover:opacity-10 dark:group-hover:opacity-20 transition-opacity text-indigo-500">
             <Briefcase size={80} />
          </div>
@@ -112,7 +112,7 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ analysis }) => {
       </div>
 
       {/* 2. Skills Breakdown */}
-      <div className="md:col-span-4 bg-white dark:bg-[#0d1021] rounded-2xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
+      <div className="col-span-12 md:col-span-4 bg-white dark:bg-[#0d1021] rounded-2xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
          <div className="flex items-center gap-3 mb-2">
             <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
                <Award size={18} />
@@ -132,7 +132,7 @@ const AnalysisDashboard: React.FC<AnalysisDashboardProps> = ({ analysis }) => {
       </div>
 
       {/* 3. Focus Areas & Trend */}
-      <div className="md:col-span-4 bg-white dark:bg-[#0d1021] rounded-2xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col justify-between">
+      <div className="col-span-12 md:col-span-4 bg-white dark:bg-[#0d1021] rounded-2xl p-6 border border-gray-200 dark:border-gray-800 shadow-sm flex flex-col justify-between">
          <div>
             <div className="flex items-center gap-3 mb-4">
                <div className="p-2 bg-amber-100 dark:bg-amber-900/30 rounded-lg text-amber-600 dark:text-amber-400">
