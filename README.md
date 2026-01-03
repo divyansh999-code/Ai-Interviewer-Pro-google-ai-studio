@@ -4,7 +4,12 @@
 🎯 AI Interviewer Pro
 AI-Powered Technical Interview Preparation Platform
 
-Live Demo - Report Bug
+Demo - 
+<img width="1865" height="868" alt="Image" src="https://github.com/user-attachments/assets/b3a05fad-d8fc-42f6-962a-fd162635de58" />
+<img width="1577" height="598" alt="Image" src="https://github.com/user-attachments/assets/ea5d56a5-e4ec-44f6-8c60-7f34f5d8c584" />
+<img width="1842" height="521" alt="Image" src="https://github.com/user-attachments/assets/6bf54b9b-a26b-4c66-a385-34758603bf87" />
+<img width="1769" height="637" alt="Image" src="https://github.com/user-attachments/assets/0079de15-7599-45c4-8dfb-808fbfe906d1" />
+<img width="1883" height="844" alt="Image" src="https://github.com/user-attachments/assets/b0fee889-e84b-4e3b-ac38-afaafc57a334" />
 
 Built by Divyansh Khandal - Dec 2025 - Jan 2026
 
@@ -30,31 +35,6 @@ Frontend: React 19.2.3 - TypeScript 5.8.2 - Vite 6.2.0 - Tailwind CSS
 AI & Backend: Google Gemini 2.5 Flash - Supabase 2.39.0 - WebRTC
 Animation: Three.js 0.160.0 - GSAP 3.12.5 - Lucide React
 
-🚀 Quick Start
-bash
-# Clone and install
-git clone https://github.com/divyansh999-code/ai-interviewer-pro.git
-cd ai-interviewer-pro
-npm install
-
-# Setup environment (.env.local)
-VITE_GEMINI_API_KEY=your_key_here  # Get from https://ai.google.dev/
-
-# Run
-npm run dev  # Opens at http://localhost:5173
-Deploy to Vercel
-bash
-vercel
-# Add VITE_GEMINI_API_KEY in dashboard: Settings → Environment Variables
-📁 Project Structure
-text
-src/
-├── App.tsx              # Main interview logic
-├── types.ts             # TypeScript interfaces
-├── components/
-│   ├── Footer.tsx       # Magnetic effects
-│   └── ui/              # Reusable components
-└── utils/               # API services
 🎯 How It Works
 Upload Resume → AI analyzes in ~2 seconds
 
@@ -67,15 +47,9 @@ Get Feedback → Scores across 6 dimensions + study roadmap
 🤝 Contributing
 Ideas welcome! Add more languages, company-specific modes, or mobile app support. Fork → Feature branch → PR with clear description.
 
-📄 License
-MIT License - Commercial use, modification, distribution allowed. See LICENSE.
 
 <div align="center">
-Divyansh Khandal - Second Year AI & Data Science @ MBM Jodhpur | SIH Finalist
-
-[
-[
-[
+Divyansh Khandal - AI & Data Science Student
 
 Built with ❤️ in Jaipur, India
 
